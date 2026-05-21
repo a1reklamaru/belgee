@@ -383,6 +383,13 @@
       padding: 2px 0;
     }
 
+    .selected-periods-wrap {
+      display: flex;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
     .period-chip {
       display: inline-flex;
       align-items: center;
@@ -393,6 +400,26 @@
       color: var(--green);
       font-size: 12px;
       font-weight: 800;
+    }
+
+    .period-clear {
+      appearance: none;
+      min-height: 28px;
+      padding: 5px 10px;
+      border: 1px solid rgba(214, 69, 69, .22);
+      border-radius: 999px;
+      background: var(--red-soft);
+      color: var(--red);
+      cursor: pointer;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 900;
+      transition: transform .16s ease, box-shadow .16s ease;
+    }
+
+    .period-clear:hover {
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 12px 24px rgba(214, 69, 69, .12);
     }
 
     .kpis {
@@ -1030,6 +1057,7 @@
             <small>Открыть выбор года и месяцев</small>
           </button>
           <div class="period-menu" id="periodMenu" data-period-menu hidden>
+            <button class="period-clear" type="button" data-clear-period>Снять выбор</button>
             <div class="period-group">
               <div class="period-group-head">
                 <div class="period-year">2025</div>
@@ -1064,7 +1092,10 @@
             </div>
           </div>
         </div>
-        <div class="selected-periods" data-selected-chips aria-label="Выбранные периоды"></div>
+        <div class="selected-periods-wrap">
+          <div class="selected-periods" data-selected-chips aria-label="Выбранные периоды"></div>
+          <button class="period-clear" type="button" data-clear-period>Снять выбор</button>
+        </div>
       </div>
     </section>
 
@@ -1549,7 +1580,7 @@
     function syncPanels() { document.querySelectorAll('.month-panel').forEach(panel => { const active = selectedKeys.includes(panel.dataset.panel); panel.classList.toggle('active', active); }); }
     function renderDashboard() { const data = selectedMonths(); syncButtons(); syncPanels(); updateKpis(data); drawDualLineChart(data); drawTrafficVolumeChart(data); drawSpendChart(data); renderTable(data); }
     function setupCampaignToggles() { document.querySelectorAll('.month-comment').forEach(comment => { const list = comment.querySelector('.campaign-list'); if (!list || comment.querySelector('.campaign-toggle')) return; const button = document.createElement('button'); button.type = 'button'; button.className = 'campaign-toggle'; button.textContent = 'Подробно по кампаниям'; button.addEventListener('click', () => { const open = comment.classList.toggle('campaigns-open'); button.textContent = open ? 'Скрыть кампании' : 'Подробно по кампаниям'; }); comment.insertBefore(button, list); }); }
-    function initMonthExplorer() { setupCampaignToggles(); const menu = document.querySelector('[data-period-menu]'); const trigger = document.querySelector('[data-period-trigger]'); const setMenuOpen = open => { if (!menu || !trigger) return; menu.hidden = !open; trigger.setAttribute('aria-expanded', open ? 'true' : 'false'); }; trigger?.addEventListener('click', event => { event.stopPropagation(); setMenuOpen(menu.hidden); }); document.addEventListener('click', event => { if (!event.target.closest('.period-dropdown')) setMenuOpen(false); }); document.addEventListener('keydown', event => { if (event.key === 'Escape') setMenuOpen(false); }); document.querySelectorAll('[data-range="year"]').forEach(input => { input.addEventListener('change', () => { const year = Number(input.dataset.year); const keys = yearMonths(year).map(month => month.key); selectedYear = year; selectedKeys = input.checked ? [...new Set([...selectedKeys, ...keys])] : selectedKeys.filter(key => !keys.includes(key)); renderDashboard(); }); }); document.querySelectorAll('[data-month]').forEach(input => { input.addEventListener('change', () => { const key = input.dataset.month; const month = months.find(item => item.key === key); if (!month) return; selectedYear = month.year; selectedKeys = input.checked ? [...new Set([...selectedKeys, key])] : selectedKeys.filter(item => item !== key); renderDashboard(); }); }); renderDashboard(); }
+    function initMonthExplorer() { setupCampaignToggles(); const menu = document.querySelector('[data-period-menu]'); const trigger = document.querySelector('[data-period-trigger]'); const setMenuOpen = open => { if (!menu || !trigger) return; menu.hidden = !open; trigger.setAttribute('aria-expanded', open ? 'true' : 'false'); }; trigger?.addEventListener('click', event => { event.stopPropagation(); setMenuOpen(menu.hidden); }); document.addEventListener('click', event => { if (!event.target.closest('.period-dropdown')) setMenuOpen(false); }); document.addEventListener('keydown', event => { if (event.key === 'Escape') setMenuOpen(false); }); document.querySelectorAll('[data-clear-period]').forEach(button => { button.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); selectedKeys = []; renderDashboard(); }); }); document.querySelectorAll('[data-range="year"]').forEach(input => { input.addEventListener('change', () => { const year = Number(input.dataset.year); const keys = yearMonths(year).map(month => month.key); selectedYear = year; selectedKeys = input.checked ? [...new Set([...selectedKeys, ...keys])] : selectedKeys.filter(key => !keys.includes(key)); renderDashboard(); }); }); document.querySelectorAll('[data-month]').forEach(input => { input.addEventListener('change', () => { const key = input.dataset.month; const month = months.find(item => item.key === key); if (!month) return; selectedYear = month.year; selectedKeys = input.checked ? [...new Set([...selectedKeys, key])] : selectedKeys.filter(item => item !== key); renderDashboard(); }); }); renderDashboard(); }
     initMonthExplorer();
   </script>
 
