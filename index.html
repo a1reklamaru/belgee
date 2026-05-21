@@ -209,6 +209,189 @@
       gap: 6px;
     }
 
+    .period-filter {
+      display: grid;
+      grid-template-columns: minmax(260px, 420px) 1fr;
+      gap: 12px;
+      align-items: start;
+      margin-top: 10px;
+    }
+
+    .period-dropdown {
+      position: relative;
+    }
+
+    .period-trigger {
+      appearance: none;
+      position: relative;
+      width: 100%;
+      min-height: 56px;
+      padding: 10px 44px 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+      box-shadow: 0 12px 28px rgba(47, 72, 105, .08);
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+
+    .period-trigger::after {
+      content: "";
+      position: absolute;
+      right: 16px;
+      top: 22px;
+      width: 9px;
+      height: 9px;
+      border-right: 2px solid var(--blue);
+      border-bottom: 2px solid var(--blue);
+      transform: rotate(45deg);
+      transition: transform .18s ease;
+    }
+
+    .period-trigger[aria-expanded="true"]::after {
+      transform: translateY(4px) rotate(225deg);
+    }
+
+    .period-trigger:hover,
+    .period-trigger[aria-expanded="true"] {
+      border-color: rgba(45, 108, 223, .4);
+      box-shadow: 0 18px 34px rgba(45, 108, 223, .13);
+      transform: translateY(-1px);
+    }
+
+    .period-trigger strong,
+    .period-trigger small {
+      display: block;
+    }
+
+    .period-trigger strong {
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .period-trigger small {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .period-menu {
+      position: absolute;
+      z-index: 20;
+      left: 0;
+      top: calc(100% + 8px);
+      width: min(720px, calc(100vw - 48px));
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: 0 24px 50px rgba(23, 32, 51, .18);
+    }
+
+    .period-menu[hidden] {
+      display: none;
+    }
+
+    .period-group + .period-group {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .period-group-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .period-year {
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .period-options {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(78px, 1fr));
+      gap: 6px;
+    }
+
+    .period-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #eef4fb;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 900;
+      transition: background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease;
+    }
+
+    .period-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .period-option span,
+    .period-option small {
+      display: block;
+    }
+
+    .period-option small {
+      margin-top: 1px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .period-option:hover,
+    .period-option.active {
+      background: var(--green-soft);
+      border-color: rgba(18, 151, 102, .38);
+      color: var(--green);
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 14px 26px rgba(18, 151, 102, .12);
+    }
+
+    .period-option.year-option {
+      min-width: 96px;
+      background: #ffffff;
+      color: var(--blue);
+    }
+
+    .selected-periods {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 56px;
+      align-content: flex-start;
+      padding: 2px 0;
+    }
+
+    .period-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
     .kpis {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -708,6 +891,14 @@
         grid-template-columns: 54px 74px 1fr;
       }
 
+      .period-filter {
+        grid-template-columns: 1fr;
+      }
+
+      .period-menu {
+        width: min(720px, calc(100vw - 36px));
+      }
+
       .grid {
         grid-template-columns: 1fr;
       }
@@ -748,6 +939,21 @@
 
       .calendar-year {
         grid-template-columns: 1fr;
+      }
+
+      .period-menu {
+        position: static;
+        width: 100%;
+        margin-top: 8px;
+      }
+
+      .period-group-head {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .period-options {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .calendar-months {
@@ -814,36 +1020,50 @@
         <h2>Фильтр периода</h2>
         <p data-selection-summary>Сейчас показаны данные: 2026, за период. Можно выбрать 1, 2 или больше месяцев в разных годах для сравнения.</p>
       </div>
-      <div class="calendar-filter" role="group" aria-label="Календарь выбора месяцев">
-        <div class="calendar-year" data-calendar-year="2025">
-          <div class="calendar-year-label">2025</div>
-          <button class="month-btn" type="button" data-range="year" data-year="2025" role="tab" aria-selected="false">За год<small>2025</small></button>
-          <div class="calendar-months">
-            <button class="month-btn" type="button" data-month="jan25" data-year="2025" role="tab" aria-selected="false">янв.<small>3 лида</small></button>
-            <button class="month-btn" type="button" data-month="feb25" data-year="2025" role="tab" aria-selected="false">фев.<small>4 лида</small></button>
-            <button class="month-btn" type="button" data-month="mar25" data-year="2025" role="tab" aria-selected="false">мар.<small>14 лидов</small></button>
-            <button class="month-btn" type="button" data-month="apr25" data-year="2025" role="tab" aria-selected="false">апр.<small>13 лидов</small></button>
-            <button class="month-btn" type="button" data-month="may25" data-year="2025" role="tab" aria-selected="false">май<small>9 лидов</small></button>
-            <button class="month-btn" type="button" data-month="jun25" data-year="2025" role="tab" aria-selected="false">июн.<small>8 лидов</small></button>
-            <button class="month-btn" type="button" data-month="jul25" data-year="2025" role="tab" aria-selected="false">июл.<small>5 лидов</small></button>
-            <button class="month-btn" type="button" data-month="aug25" data-year="2025" role="tab" aria-selected="false">авг.<small>4 лида</small></button>
-            <button class="month-btn" type="button" data-month="sep25" data-year="2025" role="tab" aria-selected="false">сен.<small>13 лидов</small></button>
-            <button class="month-btn" type="button" data-month="oct25" data-year="2025" role="tab" aria-selected="false">окт.<small>17 лидов</small></button>
-            <button class="month-btn" type="button" data-month="nov25" data-year="2025" role="tab" aria-selected="false">ноя.<small>21 лид</small></button>
-            <button class="month-btn" type="button" data-month="dec25" data-year="2025" role="tab" aria-selected="false">дек.<small>18 лидов</small></button>
+      <div class="period-filter">
+        <div class="period-dropdown">
+          <button class="period-trigger" type="button" data-period-trigger aria-expanded="false" aria-controls="periodMenu">
+            <strong>2026, за период</strong>
+            <small>Открыть выбор года и месяцев</small>
+          </button>
+          <div class="period-menu" id="periodMenu" data-period-menu hidden>
+            <div class="period-group">
+              <div class="period-group-head">
+                <div class="period-year">2025</div>
+                <label class="period-option year-option"><input type="checkbox" data-range="year" data-year="2025"> <span>Весь год<small>2025</small></span></label>
+              </div>
+              <div class="period-options">
+                <label class="period-option"><input type="checkbox" data-month="jan25" data-year="2025"> <span>янв.<small>3 лида</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="feb25" data-year="2025"> <span>фев.<small>4 лида</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="mar25" data-year="2025"> <span>мар.<small>14 лидов</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="apr25" data-year="2025"> <span>апр.<small>13 лидов</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="may25" data-year="2025"> <span>май<small>9 лидов</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="jun25" data-year="2025"> <span>июн.<small>8 лидов</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="jul25" data-year="2025"> <span>июл.<small>5 лидов</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="aug25" data-year="2025"> <span>авг.<small>4 лида</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="sep25" data-year="2025"> <span>сен.<small>13 лидов</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="oct25" data-year="2025"> <span>окт.<small>17 лидов</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="nov25" data-year="2025"> <span>ноя.<small>21 лид</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="dec25" data-year="2025"> <span>дек.<small>18 лидов</small></span></label>
+              </div>
+            </div>
+            <div class="period-group">
+              <div class="period-group-head">
+                <div class="period-year">2026</div>
+                <label class="period-option year-option active"><input type="checkbox" data-range="year" data-year="2026" checked> <span>Весь год<small>2026</small></span></label>
+              </div>
+              <div class="period-options">
+                <label class="period-option"><input type="checkbox" data-month="jan26" data-year="2026"> <span>янв.<small>7 лидов</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="feb26" data-year="2026"> <span>фев.<small>13 лидов</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="mar26" data-year="2026"> <span>мар.<small>23 лида</small></span></label>
+                <label class="period-option"><input type="checkbox" data-month="apr26" data-year="2026"> <span>апр.<small>23 лида</small></span></label>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="calendar-year" data-calendar-year="2026">
-          <div class="calendar-year-label">2026</div>
-          <button class="month-btn active" type="button" data-range="year" data-year="2026" role="tab" aria-selected="true">За год<small>2026</small></button>
-          <div class="calendar-months">
-            <button class="month-btn" type="button" data-month="jan26" data-year="2026" role="tab" aria-selected="false">янв.<small>7 лидов</small></button>
-            <button class="month-btn" type="button" data-month="feb26" data-year="2026" role="tab" aria-selected="false">фев.<small>13 лидов</small></button>
-            <button class="month-btn" type="button" data-month="mar26" data-year="2026" role="tab" aria-selected="false">мар.<small>23 лида</small></button>
-            <button class="month-btn" type="button" data-month="apr26" data-year="2026" role="tab" aria-selected="false">апр.<small>23 лида</small></button>
-          </div>
-        </div>
-      </div>    </section>
+        <div class="selected-periods" data-selected-chips aria-label="Выбранные периоды"></div>
+      </div>
+    </section>
 
     <section class="kpis" aria-label="Главные показатели">
       <article class="card"><div class="label">Расход</div><div class="value" data-kpi="spend">0 ₽</div><div class="note" data-kpi-note="spend">Сумма за период</div></article>
@@ -1320,11 +1540,12 @@
     function renderTable(data = selectedMonths()) { const rows = document.querySelector('#summaryRows'); rows.innerHTML = data.map((m, i) => { const prev = i === 0 ? null : data[i - 1]; const cpaTrend = !prev ? 'Старт' : m.cpa <= prev.cpa ? 'Улучшение' : 'Просадка'; const trendClass = !prev || m.cpa <= prev.cpa ? 'good-text' : 'bad-text'; return `<tr><td><strong>${m.name} ${m.year}</strong></td><td>${fmtInt.format(m.impressions)}</td><td>${fmtInt.format(m.clicks)}</td><td>${m.ctr.toFixed(2)}</td><td>${money(m.spend)}</td><td>${money(m.cpc)}</td><td class="conversion">${m.conv}</td><td>${money(m.cpa)}</td><td class="${trendClass}">${cpaTrend}</td></tr>`; }).join(''); }
     function setTrend(node, note) { node.textContent = note.text; node.classList.toggle('good', note.className === 'good'); node.classList.toggle('bad', note.className === 'bad'); node.classList.toggle('neutral', note.className === 'neutral'); }
     function updateKpis(data = selectedMonths()) { const total = aggregate(data); const years = selectedYears(data); const isFullSingleYear = years.length === 1 && data.length === yearMonths(years[0]).length; const periodText = isFullSingleYear ? `Сумма за ${years[0]}` : `Выбрано: ${data.length} мес.`; const notes = { spend: periodText, conv: { text: `Всего лидов: ${total.conv}`, className: 'good' }, cpa: { text: isFullSingleYear ? `CPA за ${years[0]}` : 'CPA по выбранным месяцам', className: total.cpa ? 'good' : 'neutral' }, cpc: { text: isFullSingleYear ? `CPC за ${years[0]}` : 'CPC по выбранным месяцам', className: 'good' } }; document.querySelector('[data-kpi="spend"]').textContent = `${money(total.spend)} ₽`; document.querySelector('[data-kpi="conv"]').textContent = total.conv; document.querySelector('[data-kpi="cpa"]').textContent = `${money(total.cpa)} ₽`; document.querySelector('[data-kpi="cpc"]').textContent = `${money(total.cpc)} ₽`; document.querySelector('[data-kpi-note="spend"]').textContent = notes.spend; setTrend(document.querySelector('[data-kpi-note="conv"]'), notes.conv); setTrend(document.querySelector('[data-kpi-note="cpa"]'), notes.cpa); setTrend(document.querySelector('[data-kpi-note="cpc"]'), notes.cpc); const summary = document.querySelector('[data-selection-summary]'); if (summary) summary.textContent = `Сейчас показаны данные: ${selectionLabel(data)}. Можно выбрать 1, 2 или больше месяцев в разных годах для сравнения.`; }
-    function syncButtons() { document.querySelectorAll('.year-btn').forEach(button => { const year = Number(button.dataset.year); const active = selectedYear === year || fullYearSelected(year) || selectedKeys.some(key => months.find(month => month.key === key && month.year === year)); button.classList.toggle('active', active); button.setAttribute('aria-selected', active ? 'true' : 'false'); }); document.querySelectorAll('.month-btn').forEach(button => { if (button.dataset.month) { const active = selectedKeys.includes(button.dataset.month); button.hidden = false; button.classList.toggle('active', active); button.setAttribute('aria-selected', active ? 'true' : 'false'); } else { const year = Number(button.dataset.year || selectedYear); const active = fullYearSelected(year); button.classList.toggle('active', active); button.setAttribute('aria-selected', active ? 'true' : 'false'); } }); }
+    function periodChips(data = selectedMonths()) { const years = selectedYears(data); const chips = []; years.forEach(year => { const yearData = data.filter(month => month.year === year); if (yearData.length === yearMonths(year).length) chips.push(`${year} за год`); else yearData.forEach(month => chips.push(`${shortMonth(month)}`)); }); return chips; }
+    function syncButtons() { const data = selectedMonths(); document.querySelectorAll('[data-month]').forEach(input => { const active = selectedKeys.includes(input.dataset.month); input.checked = active; input.closest('.period-option')?.classList.toggle('active', active); }); document.querySelectorAll('[data-range="year"]').forEach(input => { const year = Number(input.dataset.year); const active = fullYearSelected(year); input.checked = active; input.closest('.period-option')?.classList.toggle('active', active); }); const trigger = document.querySelector('[data-period-trigger] strong'); if (trigger) trigger.textContent = selectionLabel(data); const chips = document.querySelector('[data-selected-chips]'); if (chips) chips.innerHTML = periodChips(data).map(label => `<span class="period-chip">${label}</span>`).join(''); }
     function syncPanels() { document.querySelectorAll('.month-panel').forEach(panel => { const active = selectedKeys.includes(panel.dataset.panel); panel.classList.toggle('active', active); }); }
     function renderDashboard() { const data = selectedMonths(); syncButtons(); syncPanels(); updateKpis(data); drawDualLineChart(data); drawTrafficVolumeChart(data); drawSpendChart(data); renderTable(data); }
     function setupCampaignToggles() { document.querySelectorAll('.month-comment').forEach(comment => { const list = comment.querySelector('.campaign-list'); if (!list || comment.querySelector('.campaign-toggle')) return; const button = document.createElement('button'); button.type = 'button'; button.className = 'campaign-toggle'; button.textContent = 'Подробно по кампаниям'; button.addEventListener('click', () => { const open = comment.classList.toggle('campaigns-open'); button.textContent = open ? 'Скрыть кампании' : 'Подробно по кампаниям'; }); comment.insertBefore(button, list); }); }
-    function initMonthExplorer() { setupCampaignToggles(); document.querySelectorAll('.year-btn').forEach(button => { button.addEventListener('click', () => { selectedYear = Number(button.dataset.year); selectedKeys = yearMonths(selectedYear).map(month => month.key); renderDashboard(); }); }); document.querySelectorAll('.month-btn').forEach(button => { button.addEventListener('click', () => { if (button.dataset.range === 'year') { selectedYear = Number(button.dataset.year); selectedKeys = yearMonths(selectedYear).map(month => month.key); } else { const key = button.dataset.month; const month = months.find(item => item.key === key); if (!month) return; selectedYear = month.year; selectedKeys = selectedKeys.includes(key) ? selectedKeys.filter(item => item !== key) : [...selectedKeys, key]; } renderDashboard(); }); }); renderDashboard(); }
+    function initMonthExplorer() { setupCampaignToggles(); const menu = document.querySelector('[data-period-menu]'); const trigger = document.querySelector('[data-period-trigger]'); const setMenuOpen = open => { if (!menu || !trigger) return; menu.hidden = !open; trigger.setAttribute('aria-expanded', open ? 'true' : 'false'); }; trigger?.addEventListener('click', event => { event.stopPropagation(); setMenuOpen(menu.hidden); }); document.addEventListener('click', event => { if (!event.target.closest('.period-dropdown')) setMenuOpen(false); }); document.addEventListener('keydown', event => { if (event.key === 'Escape') setMenuOpen(false); }); document.querySelectorAll('[data-range="year"]').forEach(input => { input.addEventListener('change', () => { const year = Number(input.dataset.year); const keys = yearMonths(year).map(month => month.key); selectedYear = year; selectedKeys = input.checked ? [...new Set([...selectedKeys, ...keys])] : selectedKeys.filter(key => !keys.includes(key)); if (!selectedKeys.length) selectedKeys = keys; renderDashboard(); }); }); document.querySelectorAll('[data-month]').forEach(input => { input.addEventListener('change', () => { const key = input.dataset.month; const month = months.find(item => item.key === key); if (!month) return; selectedYear = month.year; selectedKeys = input.checked ? [...new Set([...selectedKeys, key])] : selectedKeys.filter(item => item !== key); if (!selectedKeys.length) selectedKeys = [key]; renderDashboard(); }); }); renderDashboard(); }
     initMonthExplorer();
   </script>
 
